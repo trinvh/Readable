@@ -1,0 +1,45 @@
+<div class="bg-light">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a ui-sref="home">Trang chủ</a></li>
+            <li><a ui-sref="storyDetail({slug: story.slug})">{{ story.name }}</a></li>
+            <li class="active">{{ chapter.name }} {{ size }}</li>
+        </ol>
+
+        <h3 class="story-name">{{ story.name }}
+        <small>{{ story.author }}</small>
+    </h3>
+    </div>
+</div>
+<div id="toolbox">
+    <ul>
+        <li scroll-up class="totop" uib-tooltip="Về đầu trang" tooltip-placement="right">
+            <a href="">
+                <i class="fa fa-arrow-circle-up"></i>
+            </a>
+        </li>
+        <li ng-if="previous" class="" uib-tooltip="Đọc chương trước" tooltip-placement="right">
+            <a ui-sref="storyRead({storySlug: story.slug, chapterSlug: previous.slug})">
+                <i class="fa fa-arrow-circle-left"></i>
+            </a>
+        </li>
+        <li class="" uib-tooltip="Mở danh sách chương" tooltip-placement="right">
+            <a href="">
+                <i class="fa fa-list-ol"></i>
+            </a>
+        </li>
+        <li ng-if="next" class="" uib-tooltip="Đọc chương tiếp theo" tooltip-placement="right">
+            <a ui-sref="storyRead({storySlug: story.slug, chapterSlug: next.slug})">
+                <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+<div id="reader-wrapper">
+
+    <div class="chapter-name">
+        <small>Chương {{ chapter.sort_order }}</small>
+        <h1>{{ chapter.name}}</h1>
+    </div>
+    <div class="readable" style="font-size: {{ settings.fontSize}}px; font-family: {{ settings.fontFamily }};">{{ chapter.text }}</div>
+</div>

@@ -1,0 +1,16 @@
+<li class="nav-label">Tùy chỉnh</li>
+<li><a ng-click="changeSize(-2)">A-</a></li>
+<li><a ng-click="changeSize(2)">A+</a></li>
+<li class="divider"></li>
+<li class="color-chooser"><a ng-class="settings.theme" 
+    uib-popover-template="colorchooser"
+    popover-trigger="outsideClick" 
+    popover-title="Chọn theme" 
+    popover-placement="bottom-right"></a></li>
+<script type="text/ng-template" id="colorchooser.html">
+    <div class="btn-group">
+        <label class="btn btn-active light" ng-model="settings.theme" uib-btn-radio="'light'" uncheckable>Sáng</label>
+        <label class="btn btn-warning wood" ng-model="settings.theme" uib-btn-radio="'wood'" uncheckable>Giấy</label>
+        <label class="btn btn-primary dark" ng-model="settings.theme" uib-btn-radio="'dark'" uib-uncheckable="uncheckable">Tối</label>
+    </div>
+</script>

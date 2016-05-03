@@ -1,0 +1,30 @@
+﻿<div class="container">
+    <div class="wrapper-page">
+        <div class="col-md-8">
+            <uib-carousel active="1" interval="5000" no-wrap="false">
+                <uib-slide ng-repeat="slide in slides" index="$index">
+                    <img ng-src="{{slide}}" style="margin:auto;">
+                </uib-slide>
+            </uib-carousel>
+            <section class="content-box">
+                <h1 class="section-header has-link"><a href="">Truyện đang HOT</a></h1>
+                <div class="row">
+                    <div class="col-xs-12 items">
+                        <div class="item" ng-repeat="story in stories">
+                            <a ui-sref="storyDetail({ slug: story.slug })" class="cover">
+                                <img ng-src="{{ story.photo }}" class="img-cover">
+                            </a>
+                            <div class="caption">
+                                <div class="name ellipsis"><a ui-sref="storyDetail({ slug: story.slug })">{{ story.name }}</div>
+                            <div class="meta"><a href="">Chương 777</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="col-md-4">
+
+        </div>
+    </div>
+</div>
