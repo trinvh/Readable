@@ -49,7 +49,7 @@ abstract class BaseSourceHandler
                     $inserted_author = Author::firstOrCreate(['name' => $author]);
                     $story->authors()->sync([$inserted_author->id], false);
                 }
-
+                $this->log("Insert new story: " . $story->id . '. ' . $story->name);
                 $this->updateStoryInfo($story);
             }
         });
@@ -141,6 +141,7 @@ abstract class BaseSourceHandler
                 'source_url' => $url,
             ])
         );
+        $this->log("Insert new chapter: " . $story->id . '.' . $sort_order . '. ' . $story->name);
     }
     protected function getCatalogueUrl()
     {
@@ -150,5 +151,13 @@ abstract class BaseSourceHandler
     protected function getContent($url)
     {
         return \Goutte::request('GET', $url);
+    }
+
+    protected function log($message, $type = 'warning')
+    {
+        $log = new \Monolog\Logger(__METHOD__);
+        $log->pushHandler(new \Monolog\Handler\StreamHandler(storage_path() . '/logs/schedules.log'));
+
+        $log->$type($message);
     }
 }
