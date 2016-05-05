@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="wrapper-page">
+        <div class="col-md-8">
+            <div class="info-top clearfix">
+                <div class="thumbnail pull-left">
+                    <img ng-src="{{ story.photo }}" class="img-cover">
+                </div>
+                <div class="info-content">
+                    <h1 class="name">{{ story.name }}</h1>
+                    <ul class="authors">
+                        <li ng-repeat="author in story.authors">
+                            <a>{{ author.name }}</a>
+                        </li>
+                    </ul>
+                    <div class="meta">
+                        <div>
+                            <span>Cập nhật lúc:</span>
+                            <abbr>{{ story.updated_at }}</abbr>
+                        </div>
+                        <div>
+                            <span>Thể loại:</span>
+                            <abbr ng-repeat="category in story.categories">
+                                <i ng-if="$index > 0">, </i>
+                                <a href="">{{ category.name }}</a>
+                            </abbr>
+                            
+                        </div>
+                    </div>
+                    <div class="labels">
+                        <span class="label label-success" ng-repeat="tag in story.tags">{{ tag.name }}</span>
+                    </div>
+
+                    
+                    <div class="row buttons">
+                        <div class="pull-left">
+                            <a class="btn btn-success" ng-click="readFirstChap()">Đọc từ đầu <i class="fa fa-check"></i></a>
+                            <a class="btn btn-warning" ng-click="readLastChap()">Đọc chap mới nhất <i class="fa fa-check"></i></a>
+                        </div>
+                        <div class="pull-right">
+                            <a btn-download ng-click="clickedDownloadEpub || downloadEpub()" class="btn btn-danger">Download EPUB <i class="fa fa-cloud-download"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="description readable" text-collapse max-length="200" text="{{ story.description }}"></div>
+            <table datatable="ng" dt-options="dtOptions" dt-columns="dtColumnDefs" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tên chương</th>
+                        <th>Lượt đọc</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="chapter in story.chapters">
+                        <td>{{ chapter.sort_order }}</td>
+                        <td><a ui-sref="storyRead({storySlug: story.slug, chapterSlug: chapter.slug})">{{ chapter.name }}</a></td>
+                        <td>{{ chapter.viewed }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <ui-view name="sidebar@"></ui-view>
+        </div>
+    </div>
+</div>

@@ -161,6 +161,10 @@ return [
         Kodeine\Acl\AclServiceProvider::class,
         Weidner\Goutte\GoutteServiceProvider::class, 
         Cviebrock\EloquentSluggable\SluggableServiceProvider::class,
+        Spatie\Fractal\FractalServiceProvider::class,
+        Sofa\Eloquence\ServiceProvider::class,
+        App\Providers\MacroServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
     ],
 
@@ -216,6 +220,11 @@ return [
         'Role'  => \Kodeine\Acl\Models\Eloquent\Role::class,
         'Permission'    => \Kodeine\Acl\Models\Eloquent\Permission::class,
         'Goutte' => Weidner\Goutte\GoutteFacade::class,
+        'EPub' => PHPePub\Core\Epub::class,
+        'Transformer' => League\Fractal\TransformerAbstract::class,
+        'PaginatorAdapter' => League\Fractal\Pagination\IlluminatePaginatorAdapter::class,
+        'UuidTrait' => Alsofronie\Uuid\UuidModelTrait::class,
+        'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 

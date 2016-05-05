@@ -12,7 +12,13 @@
         "kodeine/laravel-acl": "~1.0@dev",
         "laravelcollective/html": "~5.0",
         "gazsp/baum": "~1.1",
-        "adamwathan/bootforms": "^0.8.0"
+        "adamwathan/bootforms": "^0.8.0",
+        "grandt/phpepub": ">=4.0.3",
+        "spatie/laravel-fractal": "^1.9",
+        "alsofronie/eloquent-uuid": "dev-master",
+        "sofa/eloquence": "~5.2@dev",
+        "intervention/image": "^2.3",
+        "intervention/imagecache": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

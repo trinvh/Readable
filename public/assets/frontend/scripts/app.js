@@ -1,18 +1,39 @@
 ﻿'use strict';
 
-var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'angular-loading-bar', 'datatables', 'datatables.bootstrap', 'ngStorage']);
+window.API_URL = "http://novel.dev/api/v1";
+
+var app = angular.module('app', ['ui.router', 
+    'ui.bootstrap', 
+    'angular-loading-bar', 
+    'datatables', 
+    'datatables.bootstrap', 
+    'ngStorage',
+    'ngResource'
+]);
 
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $stateProvider.state('home', {
         url: '/',
-        templateUrl: 'partials/home.html',
-        controller: 'HomeController'
+        templateUrl: 'assets/frontend/partials/home.html',
+        controller: 'HomeController',
+        resolve: {
+            Data: ['apiService', '$stateParams', function (apiService, $stateParams) {
+                return apiService.getStories(20);
+            }]
+        }
     });
 
     $stateProvider.state('storyDetail', {
-        url: '/stories/:slug',
-        templateUrl: 'partials/story.html',
-        controller: 'StoryController',
+        url: '/stories/:slug',        
+        views: {
+            '': {
+                templateUrl: 'assets/frontend/partials/story.html',
+                controller: 'StoryController',
+            },
+            'sidebar': {
+                templateUrl: 'assets/frontend/partials/sidebars/userbox.html'
+            }
+        },
         resolve: {
             Data: ['apiService', '$stateParams', function (apiService, $stateParams) {
                 return apiService.getChapters($stateParams.slug);
@@ -24,13 +45,12 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         url: '/read/:storySlug/:chapterSlug',
         views: {
             'read-settings': {
-                templateUrl: 'partials/read-settings.html',
+                templateUrl: 'assets/frontend/partials/read-settings.html',
                 controller: 'SettingController'
             },
             '': {
-                templateUrl: 'partials/read.html',
+                templateUrl: 'assets/frontend/partials/read.html',
                 controller: 'ReadController',
-
             }
         },
         bodyClass: 'reader'
@@ -45,36 +65,48 @@ app.run(['$rootScope', 'settingService', function ($rootScope, settingService) {
     });
 }]);
 
+app.factory('Story', ['$resource', function($resource) {
+    return $resource(API_URL + "/novels/stories/:slug");   
+}]);
+
 app.service('apiService', function ($http, $q) {
     var vm = this,
-        baseUrl = "http://novel.dev/api/v1/novels/stories";
+        baseUrl = "http://novel.dev/api/v1/novels";
     var cacheStory = {};
 
-    this.get = function (url) {
+    this.get = function (url, $options = []) {
         return $http.get(url).then(function (res) {
             return res.data;
         }, function (err) {
             return null;
         });
+        
     }
     this.getStories = function (limit, page = 1) {
-        var url = baseUrl + "?limit=" + limit + "&page=" + page;
+        var url = baseUrl + "/stories?limit=" + limit + "&page=" + page;
         return this.get(url).then(function (data) {
             return data;
         });
     };
 
     this.getChapters = function (slug) {
-        var url = baseUrl + "/" + slug;
+        var url = baseUrl + "/stories/" + slug;
         return this.get(url).then(function (data) {
             return data;
         });
     };
 
     this.getChapterContent = function (story, slug) {
-        var url = baseUrl + "/" + story + "/" + slug;
+        var url = baseUrl + "/stories/" + story + "/chapters/" + slug;
         return this.get(url).then(function (data) {
             return data;
+        });
+    };
+    
+    this.getStoryMobiFile = function(story, exporter) {
+        var url = baseUrl + '/stories/' + story + '/exporters/' + exporter;
+        return this.get(url).then(function(data) {
+           return data; 
         });
     };
 
@@ -113,6 +145,31 @@ app.service('settingService', ['$rootScope', '$localStorage',
         return vm;
     }
 ]);
+
+app.directive('btnDownload', [function() {
+    return {
+        restrict: "EA",
+        link: function(scope, element, attrs) {
+            var startDownload = function() {
+                element.html("Vui lòng chờ...<i class='fa fa-spinner fa-pulse fa-fw'></i>");
+                element.addClass('disabled');
+            };
+            scope.$on('gotDownloadLink', function(e, data) {
+                if(data.url) {
+                    element.prop('href', data.url);
+                    element.html("Nhấn để tải  <i class='fa fa-cloud-download'></i>");
+                    element.removeClass('btn-danger').addClass('btn-success');
+                    element.removeClass('disabled');
+                } else {
+                    element.html("Không download được <i class='fa fa-warning'></i>");
+                    element.addClass('disabled');
+                }
+                element.unbind('click', startDownload);
+            });
+            element.bind('click', startDownload);
+        }
+    }
+}]);
 
 app.directive('navbarAffix', ['$window', function ($window) {
     return {

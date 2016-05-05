@@ -26,8 +26,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('scan-new-stories-from-sources')->daily();
-        $schedule->command('update-story')->daily();
+        $schedule->command('scan-new-stories-from-sources')->dailyAt('02:00');
+        //$schedule->command('update-story')->daily();
         $schedule->command('update-chapters')->daily();
     }
 }

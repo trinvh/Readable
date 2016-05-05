@@ -15,7 +15,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(20);
+        $categories = Category::latest()->paginate(20);
         return view('backend.novels.categories.index')
             ->withCategories($categories);
     }
@@ -27,7 +27,9 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        //
+        $category = new Category;
+        return view('backend.novels.categories.create')
+            ->withCategory($category);
     }
 
     /**
@@ -38,19 +40,14 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, Category::$rules);
+        
+        $category = Category::create($request->all());
+        
+        return redirect()->route('admin.novels.categories.index')
+            ->withSuccess('Tạo mới thể loại <strong>'.$category->name.'</strong> thành công');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.

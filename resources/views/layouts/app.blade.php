@@ -10,6 +10,7 @@
     <link href="{{ asset('/assets/plugins/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/assets/backend/css/AdminLTE.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/assets/backend/css/skins/skin-blue.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/assets/backend/css/custom.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/assets/plugins/iCheck/square/blue.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/assets/plugins/select2/select2.css') }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -49,7 +50,7 @@ desired effect
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
 
-        @include('layouts.partials.contentheader')
+        @include('layouts.partials.breadcrumb')
 
         <!-- Main content -->
         <section class="content">
@@ -58,15 +59,24 @@ desired effect
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
 
-    @include('layouts.partials.controlsidebar')
+    @include('layouts.partials.rightsidebar')
 
-    @include('layouts.partials.footer')
+    <footer class="main-footer">
+        <strong>Copyright &copy; 2016 <a href="http://trinvh.com">trinvh</a>.</strong>
+    </footer>
 
 </div><!-- ./wrapper -->
 
-@section('scripts')
-    @include('layouts.partials.scripts')
-@show
+<script src="{{ asset('/assets/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+<script src="{{ asset('/assets/plugins/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/assets/plugins/select2/select2.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/assets/plugins/bootbox/bootbox.min.js')}}" type="text/javascript"></script>
+<script src="{{ asset('/assets/plugins/laravel.js')}}" type="text/javascript"></script>
+<script src="{{ asset('/assets/backend/js/custom.js')}}" type="text/javascript"></script>
+<script src="{{ asset('/assets/backend/js/app.min.js') }}" type="text/javascript"></script>
+<script>
+$('.select2').select2();
+</script>
 
 @yield('after-scripts')
 </body>

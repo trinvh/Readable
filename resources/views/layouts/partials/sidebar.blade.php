@@ -31,18 +31,14 @@
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
-            <li class="header">HEADER</li>
-            <li class="active"><a href="/admin"><i class='fa fa-link'></i> <span>Dashboard</span></a></li>
-            <li><a href="#"><i class='fa fa-link'></i> <span>Another Link</span></a></li>
-            <li class="treeview">
-                <a href="#"><i class='fa fa-link'></i> <span>Quản lý truyện</span> <i class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                    <li><a href="/admin/novels/stories">Danh sách truyện</a></li>
-                    <li><a href="/admin/novels/categories">Quản lý thể loại</a></li>
-                    <li><a href="/admin/novels/authors">Quản lý tác giả</a></li>
-                    <li><a href="/admin/novels/tags">Quản lý tags</a></li>
-                </ul>
-            </li>
+            <li class="header">MAIN</li>
+            <li class="active"><a href="/admin"><i class='fa fa-link'></i> Dashboard</a></li>
+            <li class="header">NOVELS</li>
+            <li><a href="/admin/novels/stories"><i class='fa fa-link'></i> Danh sách truyện <small class="label pull-right bg-yellow">{{ \App\Models\Novel\Story::count() }}</small></a></li>
+            <li><a href="/admin/novels/categories"><i class='fa fa-link'></i> Quản lí thể loại</a></li>
+            <li><a href="/admin/novels/authors"><i class='fa fa-link'></i> Quản lí tác giả</a></li>
+            <li><a href="/admin/novels/tags"><i class='fa fa-link'></i> Quản lí tags</a></li>
+            <li><a href="{{ route('admin.novels.collections.index') }}"><i class='fa fa-link'></i> Bộ sưu tập truyện<small class="label pull-right bg-green">new</small></a></li>
         </ul><!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->

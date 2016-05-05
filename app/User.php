@@ -29,4 +29,8 @@ class User extends Authenticatable
     public function gravatar() {
         return "http://www.gravatar.com/avatar/".md5(strtolower(trim($this->email)));
     }
+    
+    public function collections() {
+        return $this->hasMany(\App\Models\Novel\Collection::class);
+    }
 }

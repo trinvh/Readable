@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Backend\Novels;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Novel\Story;
 use App\Models\Novel\Category;
-use App\Models\Novel\Author;
+use App\Models\Novel\Story;
 use App\Models\Novel\Tag;
+use Illuminate\Http\Request;
 
 class StoriesController extends Controller
 {
@@ -18,11 +15,14 @@ class StoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $story = Story::first();
-        //return implode(', ', $story->tags->pluck('name')->toArray());
-        $stories = Story::latest()->paginate(20);
+        if ($request->has('q')) {
+            $query = Story::search($request->get('q'));
+        } else {
+            $query = Story::orderBy('updated_at', 'desc');
+        }
+        $stories = $query->paginate(20);
         return view('backend.novels.stories.index')
             ->withStories($stories);
     }
@@ -34,7 +34,16 @@ class StoriesController extends Controller
      */
     public function create()
     {
-        //
+        $story          = new Story;
+        $story->authors = "";
+
+        $tags       = Tag::alphabet()->get()->pluck('name', 'id');
+        $categories = Category::alphabet()->get()->pluck('name', 'id');
+
+        return view('backend.novels.stories.create')
+            ->withTags($tags)
+            ->withCategories($categories)
+            ->withStory($story);
     }
 
     /**
@@ -45,18 +54,16 @@ class StoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $this->validate($request, Story::$rules);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $story = Story::create($request->all());
+
+        $story->categories()->sync($request->get('categories'));
+        $story->tags()->sync($request->get('tags'));
+        $story->syncAuthors($request->get('authors'));
+
+        return redirect()->route('admin.novels.stories.index')
+            ->withSuccess('Cập nhật thông tin truyện thành công');
     }
 
     /**
@@ -65,12 +72,12 @@ class StoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {       
-        $story = Story::findOrFail($id);
+    public function edit(Request $request, $id)
+    {
+        $story          = Story::findOrFail($id);
         $story->authors = $story->showMany('authors');
-        
-        $tags = Tag::alphabet()->get()->pluck('name', 'id');
+
+        $tags       = Tag::alphabet()->get()->pluck('name', 'id');
         $categories = Category::alphabet()->get()->pluck('name', 'id');
         return view('backend.novels.stories.edit')
             ->withTags($tags)
@@ -88,15 +95,15 @@ class StoriesController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, Story::$rules);
-                
+
         $story = Story::findOrFail($id);
-        
+
         $story->fill($request->all());
         $story->save();
         $story->categories()->sync($request->get('categories'));
         $story->tags()->sync($request->get('tags'));
         $story->syncAuthors($request->get('authors'));
-        
+
         return redirect()->route('admin.novels.stories.index')->withSuccess('Cập nhật thông tin truyện thành công');
     }
 
@@ -108,6 +115,8 @@ class StoriesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Story::destroy($id);
+        return redirect()->back()
+            ->withSuccess("Xóa thành công");
     }
 }

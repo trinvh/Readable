@@ -16,7 +16,7 @@
                             </a>
                             <div class="caption">
                                 <div class="name ellipsis"><a ui-sref="storyDetail({ slug: story.slug })">{{ story.name }}</div>
-                            <div class="meta"><a href="">Chương 777</a></div>
+                            <div class="meta"><a ui-sref="storyRead({storySlug: story.slug, chapterSlug: story.latest_chap.slug})">{{ story.latest_chap.name }}</a></div>
                             </div>
                         </div>
                     </div>
@@ -24,7 +24,7 @@
             </section>
         </div>
         <div class="col-md-4">
-
+            <ui-view name="sidebar@"></ui-view>
         </div>
     </div>
 </div>

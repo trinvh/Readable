@@ -1,0 +1,17 @@
+<?xmlversion = "1.0"encoding = "utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="styles.css" />
+        <title>{{ $chapter->story->name }} - Chương {{ $chapter->sort_order }}</title>
+    </head>
+    <body>
+        <h3>{{ $chapter->story->name }}</h3>
+        <h4>Chương {{ $chapter->sort_order }}. {{ $chapter->name }}</h4>
+        <p></p>
+        @foreach(preg_split("/\\r\\n|\\r|\\n/", $chapter->content) as $row)
+        <div>{!! $row !!}</div>
+        @endforeach
+    </body>
+</html>

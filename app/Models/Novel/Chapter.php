@@ -21,4 +21,8 @@ class Chapter extends Model implements \Cviebrock\EloquentSluggable\SluggableInt
     public function story() {
         return $this->belongsTo(Story::class, 'story_id');
     }
+    
+    public function scopeSort($query) {
+        return $query->orderBy('sort_order', 'asc');
+    }
 }
