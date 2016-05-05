@@ -28,6 +28,6 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('scan-new-stories-from-sources')->dailyAt('02:00');
         //$schedule->command('update-story')->daily();
-        $schedule->command('update-chapters')->daily();
+        $schedule->command('update-chapters')->hourly();
     }
 }
