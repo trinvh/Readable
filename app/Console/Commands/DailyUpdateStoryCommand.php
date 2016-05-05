@@ -2,13 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Novel\Story;
-use App\Models\Novel\Category;
-use App\Models\Novel\Source;
-use App\Models\Novel\Author;
-use App\Models\Novel\Tag;
-use App\Models\Helpers\Html2Text;
+use Illuminate\Console\Command;
 
 class DailyUpdateStoryCommand extends Command
 {
@@ -43,11 +38,9 @@ class DailyUpdateStoryCommand extends Command
      */
     public function handle()
     {
-        $stories = Story::has('sources')->whereDoesntHave('tags', function($q) {
-            $q->where('name', 'Hoàn Thành');
-        })->orderBy('updated_at', 'asc')->get();
-        
-        foreach($stories as $story) {
+        $stories = Story::has('sources')->orderBy('updated_at', 'asc')->get();
+
+        foreach ($stories as $story) {
             $source = $story->sources->first();
             $source->updateStoryInfo($story);
         }
