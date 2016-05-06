@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+        Commands\QueuesListener::class,
         Commands\DailyScanStoriesFromSourcesCommand::class,
         Commands\DailyUpdateStoryCommand::class,
         Commands\DailyUpdateChaptersCommand::class,
@@ -26,6 +27,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('start-queue-listener')->everyMinute();
+        
         $schedule->command('scan-new-stories-from-sources')->dailyAt('02:00');
         //$schedule->command('update-story')->daily();
         $schedule->command('update-chapters')->hourly();
