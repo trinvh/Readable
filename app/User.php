@@ -33,4 +33,12 @@ class User extends Authenticatable
     public function collections() {
         return $this->hasMany(\App\Models\Novel\Collection::class);
     }
+    
+    public static function boot() {
+        parent::boot();
+        
+        static::creating(function($user) {
+           $user->api_token = str_random(60); 
+        });
+    }
 }

@@ -1,6 +1,10 @@
 <?php
 
-Route::group(['prefix' => 'novels', 'namespace' => 'Api\Novels'], function () {
+Route::post('auth/login', 'AuthController@login');
+Route::post('auth/signup', 'AuthController@signup');
+Route::post('auth/facebook', 'AuthController@facebook');
+
+Route::group(['prefix' => 'novels', 'namespace' => 'Novels'], function () {
 
     Route::controller('home', 'HomeController');
 
